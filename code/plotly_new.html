@@ -1,0 +1,120 @@
+<head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <h1>Hello!</h1>
+    <div>The chart will be below:</div>
+    <div id="plotly_div" style="width: 600px; height: 400px;"></div>
+    <div>This will be below the chart</div>
+    <div id="hover_div">This will be changed on hover.</div>
+
+    <script>
+        const initial_colors = ['darkred', 'red', 'orange'];
+
+        var data1 = {
+            x: ['G', 'O', 'M'],
+            y: [10, 20, 80], 
+            type: 'bar', 
+            marker: {
+                color: [...initial_colors]
+            }, 
+            customdata: [false, false, false]
+        }
+
+        var trace_data = [ data1 ]
+
+        var layout = {
+            title: 'My chart'
+        }
+
+        var chart_div = document.getElementById('plotly_div');
+        var info_div = document.getElementById('hover_div');
+
+        Plotly.newPlot(chart_div, trace_data, layout); 
+
+        chart_div.on('plotly_hover', function(data){
+            var x_hovered = data.points[0].x
+            var y_hovered = data.points[0].y 
+            var mouse_x = data.event.pointerX
+            var mouse_y = data.event.pointerY
+            info_div.innerHTML = 'I hovered on data x: '+x_hovered+' and data y: '+y_hovered+'</br> and mouse x '+mouse_x+' and mouse y '+mouse_y;
+        })
+        chart_div.on('plotly_unhover', function(data){
+            info_div.innerHTML = 'The pointer is outside of the chart'
+        })
+
+        chart_div.on('plotly_click', function(data){
+            // console.log('clicked!')
+            // console.log(data)
+
+            var pn='' // points 
+            var tn='' //traces 
+            var colors=[] //colors
+            var if_clicked = []
+
+            for(var i=0; i < data.points.length; i++){
+                pn = data.points[i].pointNumber;
+                tn = data.points[i].curveNumber;
+                colors = data.points[i].fullData.marker.color;
+                if_clicked = data.points[i].fullData.customdata;
+            };
+            console.log(if_clicked)
+            if_clicked[pn] = (!if_clicked[pn])
+            
+            for (var i=0; i<colors.length; i++){
+                if (if_clicked[i]){
+                    colors[i] = 'limegreen'
+                } else {
+                    colors[i] = initial_colors[i]
+                }
+            }
+            console.log(initial_colors)
+            console.log(colors)
+            
+            var update = {'marker':{color: colors}};
+            Plotly.restyle(chart_div, update, [tn]);
+
+            console.log(tn)
+
+        })
+
+
+
+
+        // .on("plotly_click", function(data){
+        //     console.log("click!")
+        //     // initialize variables 
+        //     var pn='' // points 
+        //     var tn='' //traces 
+        //     var colors=[] //colors
+
+        //     for(var i=0; i < data.points.length; i++){
+        //         pn = data.points[i].pointNumber;
+        //         tn = data.points[i].curveNumber;
+        //         colors = data.points[i].fullData.marker.color;
+        //     };
+
+        //     console.log(pn)
+
+        //     // here create the change in style
+        //     colors[pn] = 'limegreen';
+
+        //     // update the information displayed in the div 
+        //     data_div.innerHTML = "clicked on point number: "+pn+", trace number: "+tn
+        
+        //     // create a new configuration of the chart  
+        //     var update = {'marker':{color: colors}};
+        //     console.log(update)
+
+        //     // restyle the selected trace on the chart 
+        //     Plotly.restyle(chart_div, update, [tn]);
+        //     console.log(trace_data)
+        //     // notice that out `trace_data` variable got overwritten! 
+        //     // So we need to store the initial colors in a variable 
+        //     // and store the if_clicked in a toggle to make it be selected back and forth 
+        // })
+
+    </script>
+
+</body>
