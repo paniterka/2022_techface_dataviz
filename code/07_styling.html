@@ -1,0 +1,77 @@
+<head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<!-- <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>  -->
+
+
+</head>
+
+<body>
+    <div>
+        <h1>Hello!</h1>
+    </div>
+    <div>
+        Let's make some plotly charts.
+    </div>
+    <div id="plotly_div" style="width:600px;height:450px;"></div>
+
+    <script>
+        var trace1 = {
+            x: [1, 2, 3],
+            y: [4, 5, 6],
+            type: 'scatter', 
+            mode: 'lines+markers'
+          };
+          
+          // for the second trace we specify directly that the xaxis&yaxis belong to the second subplot  
+          var trace2 = {
+            x: [4,5],
+            y: [10,11],
+            type: 'scatter', 
+            marker: {color: 'red'} 
+        };
+          
+        var trace_data = [trace1, trace2];
+        
+        var margin_val = 30;
+        var  layout = {
+            title:'My Beautiful Chart', 
+            xaxis: {
+              showgrid: true, 
+              gridcolor: 'lightgray',
+              range: [-5,10], 
+              linecolor: 'darkred', 
+              mirror: true
+              }, 
+            yaxis: {
+              showline: true, 
+              zerolinecolor: "limegreen", 
+              tickcolor: "dodgerblue", 
+              ticklen: 8,
+              tickwidth: 4, 
+              tickfont: {
+                size: 14,
+                color: 'brown'
+                },                   
+              }, 
+            paper_bgcolor: "pink", 
+            height: 300, 
+            margin: {
+                l: margin_val,
+                r: margin_val,
+                b: margin_val,
+                t: margin_val,
+                pad: 4
+              }
+         };
+        
+         var config = {
+            responsive: true, 
+            displayModeBar: false
+        };
+          
+        Plotly.newPlot('plotly_div', trace_data, layout, config);
+
+    </script>
+
+</body>

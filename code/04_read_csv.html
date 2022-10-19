@@ -1,0 +1,66 @@
+<head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<!-- <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>  -->
+
+
+</head>
+
+<body>
+    <div>
+        <h1>Hello!</h1>
+    </div>
+    <div>
+        Let's make a chart out of a csv file stored locally.
+    </div>
+    <div id="plotly_div" style="width:600px;height:450px;"></div>
+    <div>This is below the chart.</div>
+
+    <script>
+        // we will use d3 to read in a csv. D3 is embedded inside Plotly, so we don't have to import a new library
+        var d3 = Plotly.d3;
+
+        // now we are using d3 to read in a csv, notice the different structure of the code
+        d3.csv('umzug_pivot.csv', function(data){
+            //console.log(data);   
+            plotly_plot(data);
+        })
+
+        // here we define the plotting function 
+        function plotly_plot(csvdata){
+            //to understand the keys and values, experiment and look in the console!
+            //var x0 = csvdata[0]
+            //console.log(x0)
+            //console.log(x0['Kreis 1'])
+            //console.log(Object.keys(x0))
+
+            // pick just one data trace for convenience 
+            var sel_kreis = 'Kreis 10'
+
+            // this is how to filter the csv
+            var x0 = csvdata.filter(function(el){
+                return el['KreisBisherCd'] == sel_kreis
+                })[0]; //why [0] -> filter creates a list
+            delete x0['KreisBisherCd'];
+            // console.log(x0);
+            
+            // now I can use my x0 object to create my plotly trace
+            var trace_data = [
+                {
+                x: Object.keys(x0),
+                y: Object.values(x0),
+                type: 'bar'
+                }
+            ];
+            
+            // let's have a title that contains the name of selected Kreis
+            var  layout = {
+                title:'Relocations in '+sel_kreis             
+            };
+        
+            // plot as usual 
+            Plotly.newPlot('plotly_div', trace_data, layout);
+        }
+    </script>
+
+</body>
