@@ -22,16 +22,60 @@
             customdata: [false, false, false]
         }
 
-        var trace_data = [ data1 ]
+        var data2 = {
+            x: ['G', 'O', 'banana'], 
+            y: [15, 10, 40], 
+            type: 'scatter', 
+            mode: 'markers', 
+            name: 'my second trace',
+            marker: {
+                color: 'dodgerblue'
+            }
+        }
+
+        var trace_data = [ data1, data2 ]
 
         var layout = {
-            title: 'My chart'
+            title: 'My chart', 
+            xaxis: {
+                showgrid: true, 
+                gridcolor: 'pink', 
+                linecolor: 'darkred', 
+                tickcolor: "dodgerblue", 
+                tickwidth: 4, 
+
+            }, 
+            yaxis: {
+                range: [-50,200], 
+                title: {
+                    text: 'monkey counts',
+                    font: {
+                        family: 'Courier New, monospace',
+                        size: 18,
+                        color: '#7f7f7f'
+                      }
+            },
+            }, 
+            paper_bgcolor: "wheat", 
+            margin: {
+                l: 80,
+                r: 80,
+                b: 80,
+                t: 80,
+                pad: 4
+              }
         }
+
+        var config = {
+            responsive: true, 
+            displayModeBar: true, 
+            modeBarButtonsToRemove: ['toImage']
+        };
 
         var chart_div = document.getElementById('plotly_div');
         var info_div = document.getElementById('hover_div');
 
-        Plotly.newPlot(chart_div, trace_data, layout); 
+        Plotly.newPlot(chart_div, trace_data, layout, config); 
 
         chart_div.on('plotly_hover', function(data){
             var x_hovered = data.points[0].x
